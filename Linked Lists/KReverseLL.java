@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class MergeSortLL {
+public class KReverseLL {
   public static class Node {
     int data;
     Node next;
@@ -255,37 +255,108 @@ public class MergeSortLL {
     }
 
     public static Node midNode(Node head, Node tail) {
-      Node s = head;
       Node f = head;
-      while(f!=tail && f.next!=tail){
+      Node s = head;
+
+      while (f != tail && f.next != tail) {
         f = f.next.next;
         s = s.next;
       }
+
       return s;
     }
 
     public static LinkedList mergeSort(Node head, Node tail) {
-      if(head==tail){
-        LinkedList newt = new LinkedList();
-        newt.addFirst(head.data);
-        return newt;
-      } else if(head.next==tail){
-        LinkedList newt = new LinkedList();
-        if(head.data>tail.data){
-          newt.addLast(head.data);
-          newt.addFirst(tail.data);
-        } else {
-          newt.addLast(tail.data);
-          newt.addFirst(head.data);
-        }
-        return newt;
-      } else {
-        Node mid = midNode(head, tail);
-        LinkedList fsh = mergeSort(head, mid);
-        LinkedList ssh = mergeSort(mid.next, tail);
-        LinkedList cl = mergeTwoSortedLists(fsh, ssh);
-        return cl;
+      if (head == tail) {
+        LinkedList br = new LinkedList();
+        br.addLast(head.data);
+        return br;
       }
+
+      Node mid = midNode(head, tail);
+      LinkedList fsh = mergeSort(head, mid);
+      LinkedList ssh = mergeSort(mid.next, tail);
+      LinkedList sl = mergeTwoSortedLists(fsh, ssh);
+      return sl;
+    }
+
+    public void removeDuplicates() {
+      LinkedList res = new LinkedList();
+
+      while (this.size() > 0) {
+        int val = this.getFirst();
+        this.removeFirst();
+
+        if (res.size() == 0 || val != res.tail.data) {
+          res.addLast(val);
+        }
+      }
+
+      this.head = res.head;
+      this.tail = res.tail;
+      this.size = res.size;
+    }
+
+    public void oddEven() {
+      LinkedList odd = new LinkedList();
+      LinkedList even = new LinkedList();
+
+      while (this.size > 0) {
+        int val = this.getFirst();
+        this.removeFirst();
+
+        if (val % 2 == 0) {
+          even.addLast(val);
+        } else {
+          odd.addLast(val);
+        }
+      }
+
+      if (odd.size > 0 && even.size > 0) {
+        odd.tail.next = even.head;
+
+        this.head = odd.head;
+        this.tail = even.tail;
+        this.size = odd.size + even.size;
+      } else if (odd.size > 0) {
+        this.head = odd.head;
+        this.tail = odd.tail;
+        this.size = odd.size;
+      } else if (even.size > 0) {
+        this.head = even.head;
+        this.tail = even.tail;
+        this.size = even.size;
+      }
+    }
+
+    public void kReverse(int k) {
+      LinkedList prev = null;
+      while (this.size>0) {
+        LinkedList curr = new LinkedList();
+        if(this.size<k){ 
+          while (this.size>0) {
+            int val = this.getFirst();
+            this.removeFirst();
+            curr.addLast(val);
+          }
+        } else {
+          for (int i = 0; i < k; i++) {
+            int val = this.getFirst();
+            this.removeFirst();
+            curr.addFirst(val);
+          }
+        }
+        if(prev==null){
+          prev = curr;
+        } else {
+          prev.tail.next = curr.head;
+          prev.tail = curr.tail;
+          prev.size+=curr.size();
+        }
+      }
+      this.head = prev.head;
+      this.tail = prev.tail;
+      this.size = prev.size;
     }
   }
 
@@ -300,8 +371,15 @@ public class MergeSortLL {
       l1.addLast(d);
     }
 
-    LinkedList sorted = LinkedList.mergeSort(l1.head, l1.tail);
-    sorted.display();
+    int k = Integer.parseInt(br.readLine());
+    int a = Integer.parseInt(br.readLine());
+    int b = Integer.parseInt(br.readLine());
+
+    l1.display();
+    l1.kReverse(k);
+    l1.display();
+    l1.addFirst(a);
+    l1.addLast(b);
     l1.display();
   }
 }
