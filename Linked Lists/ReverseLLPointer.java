@@ -182,7 +182,7 @@ public class ReverseLLPointer {
     public void reversePI() {
       Node curr = head;
       Node prev = null;
-      while(curr!=null) {
+      while (curr != null) {
         Node newt = curr.next;
         curr.next = prev;
         prev = curr;
