@@ -1,17 +1,17 @@
 import java.io.*;
 import java.util.*;
 
-//PUSH EFFICIENT QUEUE-STACK ADAPTER
+//POP EFFICIENT QUEUE-STACK ADAPTER
 
-public class QueueStackAdapter {
+public class QueueStackAdapter2 {
 
     public static class QueueToStackAdapter {
-        Queue<Integer> mainQ;
-        Queue<Integer> helperQ;
+        Queue < Integer > mainQ;
+        Queue < Integer > helperQ;
 
         public QueueToStackAdapter() {
-            mainQ = new ArrayDeque<>();
-            helperQ = new ArrayDeque<>();
+            mainQ = new ArrayDeque < > ();
+            helperQ = new ArrayDeque < > ();
         }
 
         int size() {
@@ -19,7 +19,13 @@ public class QueueStackAdapter {
         }
 
         void push(int val) {
+            while(mainQ.size()>0){
+                helperQ.add(mainQ.remove());
+            }
             mainQ.add(val);
+            while(helperQ.size()>0){
+                mainQ.add(helperQ.remove());
+            }
         }
 
         int pop() {
@@ -27,27 +33,12 @@ public class QueueStackAdapter {
                 System.out.println("Stack underflow");
                 return -1;
             } else {
-                while(mainQ.size()>1){
-                    helperQ.add(mainQ.remove());
-                }
-                int res = mainQ.remove();
-                while(helperQ.size()>0){
-                    mainQ.add(helperQ.remove());
-                }
-                return res;
+                return mainQ.remove();
             }
         }
 
         int top() {
-            while(mainQ.size()>1){
-                helperQ.add(mainQ.remove());
-            }
-            int res = mainQ.peek();
-            helperQ.add(mainQ.remove());
-            while(helperQ.size()>0){
-                mainQ.add(helperQ.remove());
-            }
-            return res;
+            return mainQ.peek();
         }
     }
 
