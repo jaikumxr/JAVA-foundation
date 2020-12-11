@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+// Generic Tree Level Order Traversal Linewise
+
 public class GTLevelOrderLinewise {
     private static class Node {
         int data;
@@ -92,21 +94,21 @@ public class GTLevelOrderLinewise {
     }
 
     public static void levelOrderLinewise(Node node) {
-        ArrayDeque<Node> curr = new ArrayDeque<>();
-        Node line = new Node();
-        curr.add(node);
-        curr.add(line);
-        while(curr.size()>0){
-            Node temp = curr.remove();
-            if(temp==line){
+        ArrayDeque<Node> q1 = new ArrayDeque<>();
+        ArrayDeque<Node> q2 = new ArrayDeque<>();
+        q1.add(node);
+        while(q1.size()>0){
+            node = q1.remove();
+            System.out.print(node.data+" ");
+            for (Node child : node.children) {
+                q2.add(child);
+            }
+            if(q1.size()==0){
                 System.out.println();
-                continue;
+                q1 = q2;
+                q2 = new ArrayDeque<>();
             }
-            for (Node child : temp.children) {
-                curr.add(child);
-            }
-            curr.add(line);
-            System.out.print(temp.data+" ");
+
         }
     }
 

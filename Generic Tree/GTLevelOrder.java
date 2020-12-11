@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+// Generic Tree Level Order Traversal 
+
 public class GTLevelOrder {
     private static class Node {
         int data;

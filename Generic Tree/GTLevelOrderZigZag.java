@@ -1,9 +1,9 @@
 import java.io.*;
 import java.util.*;
 
-// Generic Tree Traversal
+// Generic Tree Level Order Traversal Linewise (Zig Zag)
 
-public class GTTraverse {
+public class GTLevelOrderZigZag {
     private static class Node {
         int data;
         ArrayList<Node> children = new ArrayList<>();
@@ -82,13 +82,45 @@ public class GTTraverse {
     }
 
     public static void traversals(Node node) {
-        System.out.println("Node Pre "+node.data);
+        System.out.println("Node Pre " + node.data);
+
         for (Node child : node.children) {
-            System.out.println("Edge Pre "+node.data+"--"+child.data);
+            System.out.println("Edge Pre " + node.data + "--" + child.data);
             traversals(child);
-            System.out.println("Edge Post "+node.data+"--"+child.data);
+            System.out.println("Edge Post " + node.data + "--" + child.data);
         }
-        System.out.println("Node Post "+node.data);
+
+        System.out.println("Node Post " + node.data);
+    }
+
+    public static void levelOrderLinewiseZZ(Node node) {
+        Stack<Node> s1 = new Stack<>();
+        Stack<Node> s2 = new Stack<>();
+        int lr = 1;
+        s1.push(node);
+        while(s1.size()>0){
+            node = s1.pop();
+            System.out.print(node.data+" ");
+            if (lr%2==0) {
+                for (Node child : node.children) {
+                    s1.push(child);
+                }
+                for (Node child : node.children) {
+                    s2.push(s1.pop());
+                }
+            } else {
+                for (Node child : node.children) {
+                    s2.push(child);
+                }    
+            }
+            if (s1.size()==0) {
+                lr++;
+                System.out.println();
+                s1 = s2;
+                s2 = new Stack<>();
+            }
+        }
+
     }
 
     public static void main(String[] args) throws Exception {
@@ -101,7 +133,7 @@ public class GTTraverse {
         }
 
         Node root = construct(arr);
-        traversals(root);
+        levelOrderLinewiseZZ(root);
     }
 
 }

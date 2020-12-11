@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+// Maximum element inside Generic Tree
+
 public class GTMax {
     private static class Node {
         int data;

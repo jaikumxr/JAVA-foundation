@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+// Height of Generic Tree
+
 public class GTHeight {
     private static class Node {
         int data;

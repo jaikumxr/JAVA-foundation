@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+// Size of Generic Tree
+
 public class GTSize {
     private static class Node {
         int data;
