@@ -1,9 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-// Generic Tree Level Order Traversal 
-
-public class GTLevelOrder {
+public class GTTwoMirror {
     private static class Node {
         int data;
         ArrayList<Node> children = new ArrayList<>();
@@ -81,57 +79,42 @@ public class GTLevelOrder {
         return h;
     }
 
-    public static void traversals(Node node) {
-        System.out.println("Node Pre "+node.data);
-        for (Node child : node.children) {
-            System.out.println("Edge Pre "+node.data+"--"+child.data);
-            traversals(child);
-            System.out.println("Edge Post "+node.data+"--"+child.data);
-        }
-        System.out.println("Node Post "+node.data);
-    }
+//take one - recursive, accepted
 
-    public static void levelOrder(Node node) {
-        ArrayDeque<Node> curr = new ArrayDeque<>();
-        curr.add(node);
-        while(curr.size()>0){
-            Node temp = curr.remove();
-            for (Node child : temp.children) {
-                curr.add(child);
+    public static boolean areMirror(Node n1, Node n2) {
+        if (n1.children.size()!=n2.children.size()){
+            return false;
+        } else {
+            for (int i = 0; i < n1.children.size(); i++) {
+                if (!areMirror(n1.children.get(i), n2.children.get(n2.children.size()-i-1))){
+                    return false;
+                }
             }
-            System.out.print(temp.data+" ");
+            return true;
         }
-        System.out.print(".");
     }
-
-//take two
-
-    // public static void levelOrder(Node node) {
-    //     ArrayDeque<Node> q = new ArrayDeque<>();
-    //     q.add(node);
-
-    //     while (q.size()!=0) {
-    //         for (Node child : node.children) {
-    //             q.add(child);
-    //         }
-    //         System.out.print(q.peek().data+" ");
-    //         q.remove();
-    //         node = q.peek();
-    //     }
-    //     System.out.print(".");
-    // }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        int[] arr = new int[n];
-        String[] values = br.readLine().split(" ");
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(values[i]);
-        }
 
-        Node root = construct(arr);
-        levelOrder(root);
+        int n1 = Integer.parseInt(br.readLine());
+        int[] arr1 = new int[n1];
+        String[] values1 = br.readLine().split(" ");
+        for (int i = 0; i < n1; i++) {
+            arr1[i] = Integer.parseInt(values1[i]);
+        }
+        Node root1 = construct(arr1);
+
+        int n2 = Integer.parseInt(br.readLine());
+        int[] arr2 = new int[n2];
+        String[] values2 = br.readLine().split(" ");
+        for (int i = 0; i < n2; i++) {
+            arr2[i] = Integer.parseInt(values2[i]);
+        }
+        Node root2 = construct(arr2);
+
+        boolean mirror = areMirror(root1, root2);
+        System.out.println(mirror);
     }
 
 }

@@ -1,7 +1,9 @@
 import java.io.*;
 import java.util.*;
 
-public class GTHeight {
+//program to find the node with the subtree that has the maximum sum
+
+public class GTMaxSubtreeSum {
     private static class Node {
         int data;
         ArrayList < Node > children = new ArrayList < > ();
@@ -44,37 +46,26 @@ public class GTHeight {
         return root;
     }
 
-    public static int size(Node node) {
-        int s = 0;
-
-        for (Node child: node.children) {
-            s += size(child);
-        }
-        s += 1;
-
-        return s;
-    }
-
-    public static int max(Node node) {
-        int m = Integer.MIN_VALUE;
-
-        for (Node child: node.children) {
-            int cm = max(child);
-            m = Math.max(m, cm);
-        }
-        m = Math.max(m, node.data);
-
-        return m;
-    }
-
-    public static int height(Node node) {
-        int ht = -1;
+    public static int subTreeSum(Node node){
+        int sum = node.data;
         for (Node child : node.children) {
-            int ch = height(child);
-            ht = Math.max(ht, ch);
+            sum+=subTreeSum(child);
         }
-        ht += 1;
-        return ht;
+        return sum;
+    }
+
+    static int maxSum = Integer.MIN_VALUE;
+    static int maxSumNode;
+
+    public static void maxSubtree(Node node) {
+        int sum = subTreeSum(node);
+        if (sum>maxSum) {
+            maxSum = sum;
+            maxSumNode = node.data;
+        }
+        for (Node child : node.children) {
+            maxSubtree(child);
+        }
     }
 
     public static void main(String[] args) throws Exception {
@@ -87,9 +78,8 @@ public class GTHeight {
         }
 
         Node root = construct(arr);
-        int h = height(root);
-        System.out.println(h);
-        // display(root);
+        maxSubtree(root);
+        System.out.println(maxSumNode+"@"+maxSum);
     }
 
 }

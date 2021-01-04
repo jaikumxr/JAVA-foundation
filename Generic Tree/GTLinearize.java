@@ -1,9 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-// Generic Tree Level Order Traversal Linewise
-
-public class GTLevelOrderLinewise {
+public class GTLinearize {
     private static class Node {
         int data;
         ArrayList<Node> children = new ArrayList<>();
@@ -93,45 +91,81 @@ public class GTLevelOrderLinewise {
         System.out.println("Node Post " + node.data);
     }
 
-    public static void levelOrderLinewise(Node node) {
-        ArrayDeque<Node> q1 = new ArrayDeque<>();
-        ArrayDeque<Node> q2 = new ArrayDeque<>();
-        q1.add(node);
-        while(q1.size()>0){
-            node = q1.remove();
-            System.out.print(node.data+" ");
-            for (Node child : node.children) {
-                q2.add(child);
-            }
-            if(q1.size()==0){
-                System.out.println();
-                q1 = q2;
-                q2 = new ArrayDeque<>();
+    public static void levelOrderLinewiseZZ(Node node) {
+        Stack<Node> stack = new Stack<>();
+        stack.add(node);
+
+        Stack<Node> cstack = new Stack<>();
+        int level = 0;
+
+        while (stack.size() > 0) {
+            node = stack.pop();
+            System.out.print(node.data + " ");
+
+            if (level % 2 == 0) {
+                for (int i = 0; i < node.children.size(); i++) {
+                    Node child = node.children.get(i);
+                    cstack.push(child);
+                }
+            } else {
+                for (int i = node.children.size() - 1; i >= 0; i--) {
+                    Node child = node.children.get(i);
+                    cstack.push(child);
+                }
             }
 
+            if (stack.size() == 0) {
+                stack = cstack;
+                cstack = new Stack<>();
+                level++;
+                System.out.println();
+            }
         }
     }
 
-//take two
+    public static void mirror(Node node) {
+        for (Node child : node.children) {
+            mirror(child);
+        }
+        Collections.reverse(node.children);
+    }
 
-    // public static void levelOrderLinewise(Node node){
-    //     ArrayDeque<Node> q1 = new ArrayDeque<>();
-    //     ArrayDeque<Node> q2 = new ArrayDeque<>();
-    //     q1.add(node);
+    public static void removeLeaves(Node node) {
+        for (int i = node.children.size() - 1; i >= 0; i--) {
+            Node child = node.children.get(i);
+            if (child.children.size() == 0) {
+                node.children.remove(i);
+            }
+        }
 
-    //     while (q1.size()!=0) {
-    //         node = q1.remove();
-    //         System.out.print(node.data+" ");
-    //         for (Node child : node.children) {
-    //             q2.add(child);
+        for (Node child : node.children) {
+            removeLeaves(child);
+        }
+    }
+
+//take one - iterative
+
+    // public static void linearize(Node node) {
+    //     Stack<Node> st = new Stack<>();
+    //     st.push(node);
+    //     while(st.size()!=0){
+    //         Node curr = st.pop();
+    //         for (int i = curr.children.size()-1;i>=0;i--) {
+    //             st.push(curr.children.get(i));
     //         }
-    //         if(q1.size()==0){
-    //             System.out.println();
-    //             q1 = q2;
-    //             q2 = new ArrayDeque<>();
+    //         ArrayList<Node> ch = new ArrayList<>();
+    //         if (st.size()>0) {
+    //             ch.add(st.peek());
     //         }
+    //         curr.children = ch;
     //     }
     // }
+
+    public static void linearize(Node node) {
+        
+    }
+
+
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -143,7 +177,8 @@ public class GTLevelOrderLinewise {
         }
 
         Node root = construct(arr);
-        levelOrderLinewise(root);
+        linearize(root);
+        display(root);
     }
 
 }

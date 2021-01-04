@@ -1,21 +1,23 @@
 import java.io.*;
 import java.util.*;
 
-public class GTHeight {
+import javax.swing.plaf.multi.MultiLabelUI;
+
+public class GTMultisolver {
     private static class Node {
         int data;
-        ArrayList < Node > children = new ArrayList < > ();
+        ArrayList<Node> children = new ArrayList<>();
     }
 
     public static void display(Node node) {
         String str = node.data + " -> ";
-        for (Node child: node.children) {
+        for (Node child : node.children) {
             str += child.data + ", ";
         }
         str += ".";
         System.out.println(str);
 
-        for (Node child: node.children) {
+        for (Node child : node.children) {
             display(child);
         }
     }
@@ -23,7 +25,7 @@ public class GTHeight {
     public static Node construct(int[] arr) {
         Node root = null;
 
-        Stack < Node > st = new Stack < > ();
+        Stack<Node> st = new Stack<>();
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] == -1) {
                 st.pop();
@@ -44,38 +46,21 @@ public class GTHeight {
         return root;
     }
 
-    public static int size(Node node) {
-        int s = 0;
+    static int size;
+    static int height;
+    static int min;
+    static int max;
 
-        for (Node child: node.children) {
-            s += size(child);
-        }
-        s += 1;
-
-        return s;
-    }
-
-    public static int max(Node node) {
-        int m = Integer.MIN_VALUE;
-
-        for (Node child: node.children) {
-            int cm = max(child);
-            m = Math.max(m, cm);
-        }
-        m = Math.max(m, node.data);
-
-        return m;
-    }
-
-    public static int height(Node node) {
-        int ht = -1;
+    public static void multisolver(Node node, int depth) {
+        size++;
+        min = Math.min(node.data, min);
+        max = Math.max(node.data, max);
+        height = Math.max(height, depth);
         for (Node child : node.children) {
-            int ch = height(child);
-            ht = Math.max(ht, ch);
+            multisolver(child, depth+1);
         }
-        ht += 1;
-        return ht;
     }
+    
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -85,10 +70,16 @@ public class GTHeight {
         for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(values[i]);
         }
-
+        
         Node root = construct(arr);
-        int h = height(root);
-        System.out.println(h);
+        
+        size = 0;
+        min = Integer.MAX_VALUE;
+        max = Integer.MIN_VALUE;
+        height = 0;
+
+        multisolver(root, 0);
+
         // display(root);
     }
 

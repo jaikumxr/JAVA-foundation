@@ -1,21 +1,21 @@
 import java.io.*;
 import java.util.*;
 
-public class GTHeight {
+public class GTKthLargest {
     private static class Node {
         int data;
-        ArrayList < Node > children = new ArrayList < > ();
+        ArrayList<Node> children = new ArrayList<>();
     }
 
     public static void display(Node node) {
         String str = node.data + " -> ";
-        for (Node child: node.children) {
+        for (Node child : node.children) {
             str += child.data + ", ";
         }
         str += ".";
         System.out.println(str);
 
-        for (Node child: node.children) {
+        for (Node child : node.children) {
             display(child);
         }
     }
@@ -23,7 +23,7 @@ public class GTHeight {
     public static Node construct(int[] arr) {
         Node root = null;
 
-        Stack < Node > st = new Stack < > ();
+        Stack<Node> st = new Stack<>();
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] == -1) {
                 st.pop();
@@ -44,37 +44,39 @@ public class GTHeight {
         return root;
     }
 
-    public static int size(Node node) {
-        int s = 0;
+    static int ceil;
+    static int floor;
 
-        for (Node child: node.children) {
-            s += size(child);
+    public static void ceilAndFloor(Node node, int data) {
+        if (node.data > data) {
+            if (node.data < ceil) {
+                ceil = node.data;
+            }
         }
-        s += 1;
 
-        return s;
-    }
-
-    public static int max(Node node) {
-        int m = Integer.MIN_VALUE;
-
-        for (Node child: node.children) {
-            int cm = max(child);
-            m = Math.max(m, cm);
+        if (node.data < data) {
+            if (node.data > floor) {
+                floor = node.data;
+            }
         }
-        m = Math.max(m, node.data);
 
-        return m;
-    }
-
-    public static int height(Node node) {
-        int ht = -1;
         for (Node child : node.children) {
-            int ch = height(child);
-            ht = Math.max(ht, ch);
+            ceilAndFloor(child, data);
         }
-        ht += 1;
-        return ht;
+    }
+
+//take one - using floor
+
+
+    public static int kthLargest(Node node, int k) {
+        floor = Integer.MIN_VALUE;
+        int factor = Integer.MAX_VALUE;
+        for (int i = 0; i < k; i++) {
+            ceilAndFloor(node, factor);
+            factor = floor;
+            floor = Integer.MIN_VALUE;
+        }
+        return factor;
     }
 
     public static void main(String[] args) throws Exception {
@@ -86,10 +88,11 @@ public class GTHeight {
             arr[i] = Integer.parseInt(values[i]);
         }
 
+        int k = Integer.parseInt(br.readLine());
+
         Node root = construct(arr);
-        int h = height(root);
-        System.out.println(h);
-        // display(root);
+        int kthLargest = kthLargest(root, k);
+        System.out.println(kthLargest);
     }
 
 }

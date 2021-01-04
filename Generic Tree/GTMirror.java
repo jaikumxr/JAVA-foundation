@@ -1,9 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-// Generic Tree Level Order Traversal 
-
-public class GTLevelOrder {
+public class GTMirror {
     private static class Node {
         int data;
         ArrayList<Node> children = new ArrayList<>();
@@ -82,44 +80,55 @@ public class GTLevelOrder {
     }
 
     public static void traversals(Node node) {
-        System.out.println("Node Pre "+node.data);
+        System.out.println("Node Pre " + node.data);
+
         for (Node child : node.children) {
-            System.out.println("Edge Pre "+node.data+"--"+child.data);
+            System.out.println("Edge Pre " + node.data + "--" + child.data);
             traversals(child);
-            System.out.println("Edge Post "+node.data+"--"+child.data);
+            System.out.println("Edge Post " + node.data + "--" + child.data);
         }
-        System.out.println("Node Post "+node.data);
+
+        System.out.println("Node Post " + node.data);
     }
 
-    public static void levelOrder(Node node) {
-        ArrayDeque<Node> curr = new ArrayDeque<>();
-        curr.add(node);
-        while(curr.size()>0){
-            Node temp = curr.remove();
-            for (Node child : temp.children) {
-                curr.add(child);
+    public static void levelOrderLinewiseZZ(Node node) {
+        Stack<Node> stack = new Stack<>();
+        stack.add(node);
+
+        Stack<Node> cstack = new Stack<>();
+        int level = 0;
+
+        while (stack.size() > 0) {
+            node = stack.pop();
+            System.out.print(node.data + " ");
+
+            if (level % 2 == 0) {
+                for (int i = 0; i < node.children.size(); i++) {
+                    Node child = node.children.get(i);
+                    cstack.push(child);
+                }
+            } else {
+                for (int i = node.children.size() - 1; i >= 0; i--) {
+                    Node child = node.children.get(i);
+                    cstack.push(child);
+                }
             }
-            System.out.print(temp.data+" ");
+
+            if (stack.size() == 0) {
+                stack = cstack;
+                cstack = new Stack<>();
+                level++;
+                System.out.println();
+            }
         }
-        System.out.print(".");
     }
 
-//take two
-
-    // public static void levelOrder(Node node) {
-    //     ArrayDeque<Node> q = new ArrayDeque<>();
-    //     q.add(node);
-
-    //     while (q.size()!=0) {
-    //         for (Node child : node.children) {
-    //             q.add(child);
-    //         }
-    //         System.out.print(q.peek().data+" ");
-    //         q.remove();
-    //         node = q.peek();
-    //     }
-    //     System.out.print(".");
-    // }
+    public static void mirror(Node node) {
+        for (Node child : node.children) {
+            mirror(child);
+        }
+        Collections.reverse(node.children);
+    }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -131,7 +140,9 @@ public class GTLevelOrder {
         }
 
         Node root = construct(arr);
-        levelOrder(root);
+        display(root);
+        mirror(root);
+        display(root);
     }
 
 }

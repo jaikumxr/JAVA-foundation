@@ -1,9 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-// Generic Tree Level Order Traversal 
-
-public class GTLevelOrder {
+public class GTSymmetric {
     private static class Node {
         int data;
         ArrayList<Node> children = new ArrayList<>();
@@ -81,45 +79,22 @@ public class GTLevelOrder {
         return h;
     }
 
-    public static void traversals(Node node) {
-        System.out.println("Node Pre "+node.data);
-        for (Node child : node.children) {
-            System.out.println("Edge Pre "+node.data+"--"+child.data);
-            traversals(child);
-            System.out.println("Edge Post "+node.data+"--"+child.data);
-        }
-        System.out.println("Node Post "+node.data);
-    }
-
-    public static void levelOrder(Node node) {
-        ArrayDeque<Node> curr = new ArrayDeque<>();
-        curr.add(node);
-        while(curr.size()>0){
-            Node temp = curr.remove();
-            for (Node child : temp.children) {
-                curr.add(child);
+    public static boolean areMirror(Node n1, Node n2) {
+        if (n1.children.size()!=n2.children.size()){
+            return false;
+        } else {
+            for (int i = 0; i < n1.children.size(); i++) {
+                if (!areMirror(n1.children.get(i), n2.children.get(n2.children.size()-i-1))){
+                    return false;
+                }
             }
-            System.out.print(temp.data+" ");
+            return true;
         }
-        System.out.print(".");
     }
 
-//take two
-
-    // public static void levelOrder(Node node) {
-    //     ArrayDeque<Node> q = new ArrayDeque<>();
-    //     q.add(node);
-
-    //     while (q.size()!=0) {
-    //         for (Node child : node.children) {
-    //             q.add(child);
-    //         }
-    //         System.out.print(q.peek().data+" ");
-    //         q.remove();
-    //         node = q.peek();
-    //     }
-    //     System.out.print(".");
-    // }
+    public static boolean IsSymmetric(Node node) {
+        return areMirror(node, node);
+    }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -131,7 +106,9 @@ public class GTLevelOrder {
         }
 
         Node root = construct(arr);
-        levelOrder(root);
+        boolean sym = IsSymmetric(root);
+        System.out.println(sym);
+        // display(root);
     }
 
 }
