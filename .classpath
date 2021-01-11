@@ -11,5 +11,6 @@
 	<classpathentry kind="src" path="1.3 Functions"/>
 	<classpathentry kind="src" path="Stacks"/>
 	<classpathentry kind="src" path="Queues"/>
+	<classpathentry kind="src" path="Binary Tree"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
