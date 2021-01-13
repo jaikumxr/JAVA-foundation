@@ -1,7 +1,9 @@
 import java.io.*;
 import java.util.*;
 
-public class BTRemoveLeaf {
+//Program to find the diameter of a Binary Tree
+
+public class BTDiameter {
     public static class Node {
         int data;
         Node left;
@@ -28,7 +30,7 @@ public class BTRemoveLeaf {
         Node root = new Node(arr[0], null, null);
         Pair rtp = new Pair(root, 1);
 
-        Stack<Pair> st = new Stack<>();
+        Stack < Pair > st = new Stack < > ();
         st.push(rtp);
 
         int idx = 0;
@@ -79,45 +81,29 @@ public class BTRemoveLeaf {
         display(node.right);
     }
 
-//take one- using checkLeaf, accepted
+    public static int height(Node node) {
+        if (node == null) {
+            return -1;
+        }
 
-    // public static Boolean checkLeaf(Node node){
-    //     if(node==null){
-    //         return true;
-    //     }
-    //     if(node.left==null && node.right==null){
-    //         return true;
-    //     }
-    //     return false;
-    // }
+        int lh = height(node.left);
+        int rh = height(node.right);
 
-    // public static Node removeLeaves(Node node) {
-    //     if(node==null){
-    //         return node;
-    //     }
-    //     if(checkLeaf(node)){
-    //         return null;
-    //     } else {
-    //         Node lt = removeLeaves(node.left);
-    //         Node rt = removeLeaves(node.right);
-    //         node.left=lt;
-    //         node.right=rt;
-    //         return node;
-    //     }
-    // }
+        int th = Math.max(lh, rh) + 1;
+        return th;
+    }
 
-//take two- same time
-
-    public static Node removeLeaves(Node node) {
+    public static int diameter1(Node node) {
+        int dia = 0;
         if(node==null){
-            return null;
+            return dia;
         }
-        if(node.left==null && node.right==null){
-            return null;
-        }
-        node.left = removeLeaves(node.left);
-        node.right = removeLeaves(node.right);
-        return node;
+        int ld = diameter1(node.left);
+        int rd = diameter1(node.right);
+        int mh = height(node.left)+height(node.right)+2;
+
+        dia = Math.max(mh, Math.max(ld, rd));
+        return dia;
     }
 
     public static void main(String[] args) throws Exception {
@@ -134,8 +120,10 @@ public class BTRemoveLeaf {
         }
 
         Node root = construct(arr);
-        root = removeLeaves(root);
-        display(root);
+
+        int diameter = 0;
+        diameter = diameter1(root);
+        System.out.println(diameter);
     }
 
 }
