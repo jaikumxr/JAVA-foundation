@@ -12,5 +12,6 @@
 	<classpathentry kind="src" path="Stacks"/>
 	<classpathentry kind="src" path="Queues"/>
 	<classpathentry kind="src" path="Binary Tree"/>
+	<classpathentry kind="src" path="2D Arrays"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
