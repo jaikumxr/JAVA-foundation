@@ -14,5 +14,6 @@
 	<classpathentry kind="src" path="Binary Tree"/>
 	<classpathentry kind="src" path="2D Arrays"/>
 	<classpathentry kind="src" path="Binary Search Tree"/>
+	<classpathentry kind="src" path="Hashmaps"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
