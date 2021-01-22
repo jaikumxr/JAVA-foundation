@@ -1,5 +1,5 @@
-/bin/
-.classpath
+.DS_Store
 .project
 Test.java
+.classpath
 bin
