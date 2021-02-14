@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+//Program for a graph multisolver i.e. shortest path, longest path, ceil path and floor path.
+
 public class GraphMultisolver {
     static class Edge {
         int src;
@@ -74,6 +76,39 @@ public class GraphMultisolver {
     static PriorityQueue<Pair> pq = new PriorityQueue<>();
 
     public static void multisolver(ArrayList<Edge>[] graph, int src, int dest, boolean[] visited, int criteria, int k, String psf, int wsf) {
-        
+        if(src==dest){
+            if(wsf<spathwt){
+                spathwt = wsf;
+                spath = psf;
+            }
+            if(wsf>lpathwt){
+                lpathwt = wsf;
+                lpath = psf;
+            }
+            if(wsf<cpathwt && wsf>criteria){
+                cpathwt = wsf;
+                cpath = psf;
+            }
+            if(wsf>fpathwt && wsf<criteria) {
+                fpathwt = wsf;
+                fpath = psf;
+            }
+            if(pq.size()<k){
+                pq.add(new Pair(wsf,psf));
+            } else {
+                if(wsf>pq.peek().wsf){
+                    pq.remove();
+                    pq.add(new Pair(wsf, psf));
+                }
+            }
+            return;
+        }
+        visited[src] = true;
+        for (Edge e : graph[src]) {
+            if(visited[e.nbr]!=true){
+                multisolver(graph, e.nbr, dest, visited, criteria, k, psf+e.nbr, wsf+e.wt);
+            }
+        }
+        visited[src] = false;
     }
 }
