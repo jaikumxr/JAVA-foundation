@@ -17,5 +17,6 @@
 	<classpathentry kind="src" path="Hashmaps"/>
 	<classpathentry kind="src" path="Heaps"/>
 	<classpathentry kind="src" path="Graphs"/>
+	<classpathentry kind="src" path="DP and Greedy"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
